@@ -11,7 +11,7 @@
             font-family: "Microsoft Yahei", sans-serif;
             color: #fff;
             padding: 20px;
-            background-image: url("https://images.unsplash.com/photo-1628625885433?w=100&h=100&auto=format");
+            background-image: url("https://picsum.photos/128/128");
             background-attachment: fixed;
             background-size: 128px;
             background-repeat: repeat;
@@ -68,6 +68,7 @@
             cursor: pointer;
             transition: all 0.3s;
             margin-top: 10px;
+            width: 100%;
         }
         .login-btn:hover {
             background: rgba(34,139,34,1);
@@ -107,6 +108,7 @@
         .member-card:hover {
             border: 1px solid #55ff55;
             box-shadow: 0 0 15px rgba(85,255,85,0.5);
+            transform: translateY(-5px);
         }
         .creator-card {
             border: 2px solid #55ff55;
@@ -124,10 +126,20 @@
             background: rgba(0,0,0,0.5);
             display:flex;align-items:center;justify-content:center;
             color:#999;
+            font-size: 1.2rem;
+            /* 新增：图片自适应填充，不拉伸变形 */
+            overflow: hidden;
+        }
+        /* 头像图片样式：铺满容器，保持比例 */
+        .member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 防止图片变形 */
         }
         .creator-avatar {
             border: 3px solid #55ff55;
             color: #55ff55;
+            font-weight: bold;
         }
         .member-name {
             font-size:1.5rem; color:#999; margin-bottom:10px;
@@ -141,15 +153,30 @@
         }
         .creator-info p {
             color: #d0ffd0;
+            font-size: 1.05rem;
         }
         .footer {
-            margin-top: 20px;
+            margin-top: 40px;
             padding: 20px;
             background: rgba(34,139,34,0.8);
             border-radius: 12px;
             border: 2px solid #55ff55;
+            text-align: center;
+            color: #d0ffd0;
         }
         .content {display: none;}
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            .member-avatar {
+                width: 100px;
+                height: 100px;
+            }
+            .login-box {
+                padding: 30px 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -163,15 +190,19 @@
         </div>
     </div>
 
-    <!-- 完全还原之前绿框样式，无多余文字 -->
+    <!-- 主内容区域 -->
     <div class="content" id="mainContent">
         <div class="header">
             <h1>CMZCity Plan A</h1>
             <p>创建者：Chenmuze_</p>
         </div>
         <div class="member-container">
+            <!-- 第一个卡片（创建者）：已替换为你的图片 -->
             <div class="member-card creator-card">
-                <div class="member-avatar creator-avatar">创建者</div>
+                <div class="member-avatar creator-avatar">
+                    <!-- 替换为你提供的图片地址，保留原有头像样式（圆形、绿色边框） -->
+                    <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/efa1a648fc604c678ef8a8075a9f03c1.webp~tplv-a9rns2rl98-image.png?rcl=202512312147235FBCDB739BB407C4F956&rk3s=8e244e95&rrcfp=dafada99&x-expires=2083412843&x-signature=RHKH05ZPy10Lqk5XbQZjrVsGp54%3D" alt="Chenmuze_头像">
+                </div>
                 <h3 class="member-name creator-name">Chenmuze_</h3>
                 <div class="member-info creator-info">
                     <p>加入：创始</p>
@@ -213,11 +244,14 @@
                 </div>
             </div>
         </div>
-        <div class="footer"></div>
+        <div class="footer">
+            <p>© 2025 CMZCity - 专属社群 · 共创计划</p>
+            <p style="font-size: 0.9rem; color: #999; margin-top: 8px;">All Rights Reserved</p>
+        </div>
     </div>
 
     <script>
-        // 双项必填，填就过，无多余提示，跳转稳
+        // 双项必填，填就过，无多余提示
         function checkInvite() {
             let name = document.getElementById("userName").value.trim();
             let code = document.getElementById("inviteCode").value.trim();
@@ -228,9 +262,11 @@
             document.getElementById("loginMask").style.display = "none";
             document.getElementById("mainContent").style.display = "block";
         }
-        // 回车登录
+        // 回车登录（仅弹窗显示时触发）
         document.addEventListener('keydown',e=>{
-            if(e.key === 'Enter') checkInvite();
+            if(e.key === 'Enter' && document.getElementById("loginMask").style.display !== "none"){
+                checkInvite();
+            }
         });
     </script>
 </body>
