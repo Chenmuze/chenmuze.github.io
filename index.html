@@ -3,270 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMZCity Plan A</title>
+    <title>ChenmuzeSMP - Minecraft 服务器</title>
     <style>
-        * {margin: 0;padding: 0;box-sizing: border-box;}
-        body {
-            background: #1a1a1a;
-            font-family: "Microsoft Yahei", sans-serif;
-            color: #fff;
-            padding: 20px;
-            background-image: url("https://picsum.photos/128/128");
-            background-attachment: fixed;
-            background-size: 128px;
-            background-repeat: repeat;
-            background-blend-mode: overlay;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
         }
-        .login-mask {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
+
+        body {
+            background-color: #1a1a1a;
+            color: #f5f5f5;
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 999;
+            padding: 20px;
+            position: relative; /* 为右上角登录按钮提供定位容器 */
         }
-        .login-box {
-            background: rgba(24,24,24,0.95);
-            border: 2px solid #55ff55;
-            border-radius: 12px;
-            padding: 40px 30px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-        }
-        .login-box h2 {
-            color: #55ff55;
-            margin-bottom: 25px;
-            text-shadow: 0 0 8px #55ff55;
-        }
-        .login-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px dashed #4CAF50;
-            background: rgba(0,0,0,0.5);
-            color: #fff;
+
+        /* 右上角登录按钮样式 */
+        .login-btn-top {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #00ff00;
+            color: #1a1a1a;
+            border: none;
             border-radius: 8px;
-            font-size: 1rem;
-            margin-bottom: 15px;
-            outline: none;
-        }
-        .login-input:focus {
-            border: 1px solid #55ff55;
-            box-shadow: 0 0 10px rgba(85,255,85,0.3);
-        }
-        .login-btn {
-            padding: 12px 30px;
-            background: rgba(34,139,34,0.8);
-            border: 2px solid #55ff55;
-            color: #fff;
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-            width: 100%;
+            transition: all 0.3s ease;
+            text-decoration: none; /* 去除链接下划线 */
+            z-index: 999; /* 确保按钮在最上层 */
         }
-        .login-btn:hover {
-            background: rgba(34,139,34,1);
-            box-shadow: 0 0 15px #55ff55;
+
+        .login-btn-top:hover {
+            background-color: #00cc00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
         }
-        .header {
-            text-align: center;
-            padding: 30px 0;
-            background: rgba(34,139,34,0.8);
+
+        /* 服务器核心内容样式（默认显示，无需登录） */
+        .server-card {
+            background-color: #2d2d2d;
             border-radius: 12px;
-            margin-bottom: 30px;
-            border: 2px solid #55ff55;
+            padding: 40px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            display: block; /* 直接显示服务器内容 */
         }
-        .header h1 {
+
+        .server-title {
+            color: #00ff00;
             font-size: 2.5rem;
-            color: #f0f8ff;
-            text-shadow: 0 0 10px #55ff55;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #00ff00;
+            padding-bottom: 10px;
         }
-        .header p {
-            margin-top: 10px;
-            color: #d0ffd0;
+
+        .server-info {
+            margin: 15px 0;
             font-size: 1.1rem;
         }
-        .member-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
-            gap: 25px;
+
+        .ip-container {
+            margin: 30px 0;
+            position: relative;
         }
-        .member-card {
-            background: rgba(24,24,24,0.9);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            border: 1px dashed #4CAF50;
-            transition: all 0.3s;
-        }
-        .member-card:hover {
-            border: 1px solid #55ff55;
-            box-shadow: 0 0 15px rgba(85,255,85,0.5);
-            transform: translateY(-5px);
-        }
-        .creator-card {
-            border: 2px solid #55ff55;
-            background: rgba(20,40,20,0.95);
-        }
-        .creator-card:hover {
-            box-shadow: 0 0 20px #55ff55;
-        }
-        .member-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            border: 3px dashed #4CAF50;
-            background: rgba(0,0,0,0.5);
-            display:flex;align-items:center;justify-content:center;
-            color:#999;
+
+        .server-ip {
+            background-color: #333;
+            padding: 15px 20px;
+            border-radius: 8px;
             font-size: 1.2rem;
-            /* 新增：图片自适应填充，不拉伸变形 */
-            overflow: hidden;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
         }
-        /* 头像图片样式：铺满容器，保持比例 */
-        .member-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* 防止图片变形 */
+
+        .server-ip:hover {
+            background-color: #444;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
         }
-        .creator-avatar {
-            border: 3px solid #55ff55;
-            color: #55ff55;
+
+        .status-online {
+            color: #00ff00;
             font-weight: bold;
         }
-        .member-name {
-            font-size:1.5rem; color:#999; margin-bottom:10px;
+
+        .member-count {
+            color: #f5f5f5;
+            font-style: italic;
         }
-        .creator-name {
-            color: #55ff55;
-            text-shadow: 0 0 8px #55ff55;
+
+        /* 投票系统样式 */
+        .vote-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #00ff00;
         }
-        .member-info p {
-            color:#666; line-height:1.6; margin:5px 0;
+
+        .vote-title {
+            color: #00ff00;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
         }
-        .creator-info p {
-            color: #d0ffd0;
+
+        .vote-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .vote-option {
+            background-color: #333;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid #555;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .vote-option:hover {
+            border-color: #00ff00;
+            background-color: #444;
+            box-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
+        }
+
+        .vote-option.voted {
+            background-color: #2a4b2a;
+            border-color: #00ff00;
+            cursor: not-allowed;
+        }
+
+        .option-text {
             font-size: 1.05rem;
         }
-        .footer {
-            margin-top: 40px;
-            padding: 20px;
-            background: rgba(34,139,34,0.8);
+
+        .vote-count {
+            color: #00ff00;
+            font-weight: bold;
+            background-color: #1a1a1a;
+            padding: 5px 12px;
             border-radius: 12px;
-            border: 2px solid #55ff55;
-            text-align: center;
-            color: #d0ffd0;
         }
-        .content {display: none;}
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            .member-avatar {
-                width: 100px;
-                height: 100px;
-            }
-            .login-box {
-                padding: 30px 20px;
-            }
+
+        .footer {
+            margin-top: 30px;
+            color: #888;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
-    <!-- 用户名+邀请码登录弹窗 -->
-    <div class="login-mask" id="loginMask">
-        <div class="login-box">
-            <h2>CMZCity 邀请登录</h2>
-            <input type="text" class="login-input" id="userName" placeholder="请填写用户名">
-            <input type="text" class="login-input" id="inviteCode" placeholder="请输入邀请码">
-            <button class="login-btn" onclick="checkInvite()">验证登录</button>
-        </div>
-    </div>
+    <!-- 右上角登录按钮，点击跳转至minecraft.net -->
+    <a href="https://www.minecraft.net" target="_blank" class="login-btn-top">登录</a>
 
-    <!-- 主内容区域 -->
-    <div class="content" id="mainContent">
-        <div class="header">
-            <h1>CMZCity Plan A</h1>
-            <p>创建者：Chenmuze_</p>
+    <!-- 服务器核心内容（默认直接显示） -->
+    <div class="server-card" id="serverCard">
+        <h1 class="server-title">ChenmuzeSMP</h1>
+
+        <p class="server-info">游戏版本：Minecraft Java 版 1.21.8</p>
+        <p class="server-info">服务器状态：<span class="status-online">✅ 持续在线</span></p>
+        <p class="server-info">成员数量：<span class="member-count">0 人</span></p>
+
+        <div class="ip-container">
+            <div class="server-ip" id="serverIp">sprat.aternos.host:24976</div>
         </div>
-        <div class="member-container">
-            <!-- 第一个卡片（创建者）：已替换为你的图片 -->
-            <div class="member-card creator-card">
-                <div class="member-avatar creator-avatar">
-                    <!-- 替换为你提供的图片地址，保留原有头像样式（圆形、绿色边框） -->
-                    <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/efa1a648fc604c678ef8a8075a9f03c1.webp~tplv-a9rns2rl98-image.png?rcl=202512312147235FBCDB739BB407C4F956&rk3s=8e244e95&rrcfp=dafada99&x-expires=2083412843&x-signature=RHKH05ZPy10Lqk5XbQZjrVsGp54%3D" alt="Chenmuze_头像">
-                </div>
-                <h3 class="member-name creator-name">Chenmuze_</h3>
-                <div class="member-info creator-info">
-                    <p>加入：创始</p>
-                </div>
-            </div>
-            <div class="member-card">
-                <div class="member-avatar">暂无</div>
-                <h3 class="member-name">成员ID</h3>
-                <div class="member-info">
-                    <p>加入：待填写</p>
-                </div>
-            </div>
-            <div class="member-card">
-                <div class="member-avatar">暂无</div>
-                <h3 class="member-name">成员ID</h3>
-                <div class="member-info">
-                    <p>加入：待填写</p>
-                </div>
-            </div>
-            <div class="member-card">
-                <div class="member-avatar">暂无</div>
-                <h3 class="member-name">成员ID</h3>
-                <div class="member-info">
-                    <p>加入：待填写</p>
-                </div>
-            </div>
-            <div class="member-card">
-                <div class="member-avatar">暂无</div>
-                <h3 class="member-name">成员ID</h3>
-                <div class="member-info">
-                    <p>加入：待填写</p>
-                </div>
-            </div>
-            <div class="member-card">
-                <div class="member-avatar">暂无</div>
-                <h3 class="member-name">成员ID</h3>
-                <div class="member-info">
-                    <p>加入：待填写</p>
+
+        <!-- 投票系统模块（仅保留1个投票选项） -->
+        <div class="vote-section">
+            <h2 class="vote-title">📊 ChenmuzeSMP 服务器投票</h2>
+            <div class="vote-options" id="voteOptions">
+                <!-- 仅保留1个投票选项，文字为指定内容 -->
+                <div class="vote-option" data-option="1">
+                    <span class="option-text">1，为Chenmuze_的server投票</span>
+                    <span class="vote-count" id="count1">0</span>
                 </div>
             </div>
         </div>
+
         <div class="footer">
-            <p>© 2025 CMZCity - 专属社群 · 共创计划</p>
-            <p style="font-size: 0.9rem; color: #999; margin-top: 8px;">All Rights Reserved</p>
+            © 2026 ChenmuzeSMP | 欢迎加入我们的服务器
         </div>
     </div>
 
     <script>
-        // 双项必填，填就过，无多余提示
-        function checkInvite() {
-            let name = document.getElementById("userName").value.trim();
-            let code = document.getElementById("inviteCode").value.trim();
-            if(name === "" || code === ""){
-                alert("用户名和邀请码都不能为空～");
-                return;
+        // IP 复制功能（无提示）
+        const serverIpElement = document.getElementById('serverIp');
+        serverIpElement.addEventListener('click', () => {
+            navigator.clipboard.writeText(serverIpElement.textContent)
+                .catch(err => {
+                    console.error('复制失败：', err);
+                });
+        });
+
+        // 投票系统核心功能（无提示）
+        document.addEventListener('DOMContentLoaded', () => {
+            const voteOptions = document.querySelectorAll('.vote-option');
+            const votedOptionKey = 'chenmuzesmp_voted_option';
+            const voteCountKeyPrefix = 'chenmuzesmp_vote_count_';
+
+            // 初始化投票数
+            voteOptions.forEach(option => {
+                const optionId = option.dataset.option;
+                const countElement = document.getElementById(`count${optionId}`);
+                const savedCount = localStorage.getItem(`${voteCountKeyPrefix}${optionId}`) || 0;
+                countElement.textContent = savedCount;
+            });
+
+            // 初始化已投票状态
+            const votedOption = localStorage.getItem(votedOptionKey);
+            if (votedOption) {
+                voteOptions.forEach(option => {
+                    if (option.dataset.option === votedOption) {
+                        option.classList.add('voted');
+                    }
+                });
             }
-            document.getElementById("loginMask").style.display = "none";
-            document.getElementById("mainContent").style.display = "block";
-        }
-        // 回车登录（仅弹窗显示时触发）
-        document.addEventListener('keydown',e=>{
-            if(e.key === 'Enter' && document.getElementById("loginMask").style.display !== "none"){
-                checkInvite();
-            }
+
+            // 投票点击事件
+            voteOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    if (localStorage.getItem(votedOptionKey)) {
+                        return;
+                    }
+
+                    const optionId = option.dataset.option;
+                    const countElement = document.getElementById(`count${optionId}`);
+                    let currentCount = parseInt(countElement.textContent) || 0;
+                    currentCount++;
+                    countElement.textContent = currentCount;
+                    localStorage.setItem(`${voteCountKeyPrefix}${optionId}`, currentCount);
+                    localStorage.setItem(votedOptionKey, optionId);
+                    option.classList.add('voted');
+                });
+            });
         });
     </script>
 </body>
