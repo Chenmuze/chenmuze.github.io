@@ -3,255 +3,849 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChenmuzeSMP - Minecraft 服务器</title>
+    <title>Flipper Zero 模拟器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft YaHei", Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
-            background-color: #1a1a1a;
-            color: #f5f5f5;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             padding: 20px;
-            position: relative; /* 为右上角登录按钮提供定位容器 */
         }
-
-        /* 右上角登录按钮样式 */
-        .login-btn-top {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #00ff00;
-            color: #1a1a1a;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none; /* 去除链接下划线 */
-            z-index: 999; /* 确保按钮在最上层 */
-        }
-
-        .login-btn-top:hover {
-            background-color: #00cc00;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-        }
-
-        /* 服务器核心内容样式（默认显示，无需登录） */
-        .server-card {
-            background-color: #2d2d2d;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
-            text-align: center;
-            max-width: 600px;
+        
+        .container {
+            max-width: 1200px;
             width: 100%;
-            display: block; /* 直接显示服务器内容 */
+            padding: 20px;
         }
-
-        .server-title {
-            color: #00ff00;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #00ff00;
-            padding-bottom: 10px;
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
-
-        .server-info {
-            margin: 15px 0;
-            font-size: 1.1rem;
+        
+        h1 {
+            color: #00f3ff;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
         }
-
-        .ip-container {
-            margin: 30px 0;
-            position: relative;
-        }
-
-        .server-ip {
-            background-color: #333;
-            padding: 15px 20px;
-            border-radius: 8px;
+        
+        .subtitle {
+            color: #a0a0a0;
             font-size: 1.2rem;
-            color: #00ff00;
-            border: 1px solid #00ff00;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.3s ease;
-        }
-
-        .server-ip:hover {
-            background-color: #444;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-        }
-
-        .status-online {
-            color: #00ff00;
-            font-weight: bold;
-        }
-
-        .member-count {
-            color: #f5f5f5;
-            font-style: italic;
-        }
-
-        /* 投票系统样式 */
-        .vote-section {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 2px solid #00ff00;
-        }
-
-        .vote-title {
-            color: #00ff00;
-            font-size: 1.8rem;
             margin-bottom: 20px;
         }
-
-        .vote-options {
+        
+        .flipper-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .flipper-device {
+            background: #111;
+            border-radius: 20px;
+            padding: 25px;
+            width: 350px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            position: relative;
+            border: 1px solid #333;
+        }
+        
+        .flipper-screen {
+            background: #0a2f0a;
+            border-radius: 10px;
+            padding: 20px;
+            height: 220px;
+            margin-bottom: 25px;
+            border: 2px solid #1a5a1a;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0, 100, 0, 0.7);
+        }
+        
+        .screen-content {
+            height: 100%;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-bottom: 25px;
         }
-
-        .vote-option {
-            background-color: #333;
-            padding: 12px 20px;
-            border-radius: 8px;
-            border: 1px solid #555;
+        
+        .screen-header {
+            color: #0f0;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #0f0;
+        }
+        
+        .menu-item {
+            padding: 8px 10px;
+            margin: 3px 0;
+            border-radius: 5px;
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
         }
-
-        .vote-option:hover {
-            border-color: #00ff00;
-            background-color: #444;
-            box-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
+        
+        .menu-item:hover {
+            background: rgba(0, 255, 0, 0.1);
         }
-
-        .vote-option.voted {
-            background-color: #2a4b2a;
-            border-color: #00ff00;
-            cursor: not-allowed;
-        }
-
-        .option-text {
-            font-size: 1.05rem;
-        }
-
-        .vote-count {
-            color: #00ff00;
+        
+        .menu-item.active {
+            background: rgba(0, 255, 0, 0.2);
+            color: #0f0;
             font-weight: bold;
-            background-color: #1a1a1a;
-            padding: 5px 12px;
-            border-radius: 12px;
         }
-
-        .footer {
-            margin-top: 30px;
+        
+        .menu-item i {
+            color: #0f0;
+        }
+        
+        .flipper-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .btn {
+            background: #222;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            color: #ccc;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+            user-select: none;
+        }
+        
+        .btn:hover {
+            background: #333;
+            transform: translateY(-3px);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .btn-directional {
+            grid-column: span 1;
+        }
+        
+        .btn-center {
+            grid-column: 2;
+            grid-row: 2;
+        }
+        
+        .btn-ok {
+            background: #005500;
+        }
+        
+        .btn-ok:hover {
+            background: #007700;
+        }
+        
+        .btn-back {
+            background: #550000;
+        }
+        
+        .btn-back:hover {
+            background: #770000;
+        }
+        
+        .flipper-info {
+            flex: 1;
+            max-width: 600px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        .info-section {
+            margin-bottom: 25px;
+        }
+        
+        h2 {
+            color: #00f3ff;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        h3 {
+            color: #00c8d6;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        
+        .feature-list {
+            list-style-type: none;
+            margin-left: 10px;
+        }
+        
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-list i {
+            color: #0f0;
+            margin-right: 10px;
+            width: 20px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background: #0f0;
+            box-shadow: 0 0 10px #0f0;
+        }
+        
+        .function-area {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .function-select {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .func-btn {
+            background: rgba(0, 100, 255, 0.2);
+            border: 1px solid #0066ff;
+            color: #66aaff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .func-btn:hover {
+            background: rgba(0, 100, 255, 0.4);
+        }
+        
+        .func-btn.active {
+            background: rgba(0, 100, 255, 0.6);
+            color: white;
+        }
+        
+        .function-display {
+            background: rgba(0, 20, 40, 0.7);
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 150px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            max-height: 300px;
+        }
+        
+        .signal-bar {
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .signal-level {
+            height: 100%;
+            background: linear-gradient(to right, #ff0000, #ffff00, #00ff00);
+            width: 75%;
+            border-radius: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: #888;
             font-size: 0.9rem;
+            width: 100%;
+        }
+        
+        .github-link {
+            color: #00f3ff;
+            text-decoration: none;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        
+        .github-link:hover {
+            text-decoration: underline;
+        }
+        
+        .battery-indicator {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            align-items: center;
+            color: #0f0;
+            font-size: 0.9rem;
+        }
+        
+        .battery-icon {
+            margin-right: 5px;
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .flipper-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .flipper-info {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
         }
     </style>
 </head>
 <body>
-    <!-- 右上角登录按钮，点击跳转至minecraft.net -->
-    <a href="https://www.minecraft.net" target="_blank" class="login-btn-top">登录</a>
-
-    <!-- 服务器核心内容（默认直接显示） -->
-    <div class="server-card" id="serverCard">
-        <h1 class="server-title">ChenmuzeSMP</h1>
-
-        <p class="server-info">游戏版本：Minecraft Java 版 1.21.8</p>
-        <p class="server-info">服务器状态：<span class="status-online">✅ 持续在线</span></p>
-        <p class="server-info">成员数量：<span class="member-count">0 人</span></p>
-
-        <div class="ip-container">
-            <div class="server-ip" id="serverIp">Chenmuze.aternos.me(主IP请先输入Chenmuze.aternos.me)</div>
-        </div>
-
-        <!-- 投票系统模块（仅保留1个投票选项） -->
-        <div class="vote-section">
-            <h2 class="vote-title">📊 ChenmuzeSMP 服务器投票</h2>
-            <div class="vote-options" id="voteOptions">
-                <!-- 仅保留1个投票选项，文字为指定内容 -->
-                <div class="vote-option" data-option="1">
-                    <span class="option-text">1，为Chenmuze_的server投票</span>
-                    <span class="vote-count" id="count1">0</span>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-gamepad"></i> Flipper Zero 模拟器</h1>
+            <p class="subtitle">基于网页的 Flipper Zero 功能模拟器 | 兼容 GitHub Pages</p>
+            <p>使用下方的模拟设备或功能按钮来体验 Flipper Zero 的基本功能</p>
+        </header>
+        
+        <div class="flipper-container">
+            <div class="flipper-device">
+                <div class="flipper-screen">
+                    <div class="battery-indicator">
+                        <i class="fas fa-battery-three-quarters battery-icon"></i>
+                        <span>87%</span>
+                    </div>
+                    <div class="screen-content">
+                        <div class="screen-header">
+                            Flipper Zero > 主菜单
+                        </div>
+                        <div id="menu-items">
+                            <!-- 菜单项将由JavaScript动态生成 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flipper-buttons">
+                    <button class="btn btn-directional" id="btn-up">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                    
+                    <button class="btn btn-directional" id="btn-left">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    
+                    <button class="btn btn-center btn-ok" id="btn-ok">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    
+                    <button class="btn btn-directional" id="btn-right">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    
+                    <button class="btn btn-directional" id="btn-down">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <button class="btn btn-back" id="btn-back" style="grid-column: 1; grid-row: 3;">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                    
+                    <button class="btn" id="btn-power" style="grid-column: 3; grid-row: 3;">
+                        <i class="fas fa-power-off"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flipper-info">
+                <div class="info-section">
+                    <h2>Flipper Zero 模拟器</h2>
+                    <p>这是一个基于网页的 Flipper Zero 模拟器，模拟了 Flipper Zero 多功能工具的核心功能。</p>
+                    <div class="status-indicator pulse"></div>
+                    <span>模拟器状态: <strong>运行中</strong></span>
+                    
+                    <div class="signal-bar">
+                        <div class="signal-level"></div>
+                    </div>
+                    <p style="margin-top:5px; font-size:0.9rem;">信号强度: 75%</p>
+                </div>
+                
+                <div class="info-section">
+                    <h3>主要功能</h3>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-broadcast-tower"></i> 射频信号模拟 (Sub-GHz)</li>
+                        <li><i class="fas fa-id-card"></i> NFC/RFID 读写模拟</li>
+                        <li><i class="fas fa-tv"></i> 红外遥控器模拟</li>
+                        <li><i class="fas fa-keyboard"></i> BadUSB 功能模拟</li>
+                        <li><i class="fas fa-microchip"></i> iButton 模拟</li>
+                        <li><i class="fas fa-code"></i> GPIO 控制模拟</li>
+                    </ul>
+                </div>
+                
+                <div class="function-area">
+                    <h3>功能模拟</h3>
+                    <p>选择以下功能进行模拟操作：</p>
+                    
+                    <div class="function-select">
+                        <button class="func-btn active" data-function="infrared">红外遥控</button>
+                        <button class="func-btn" data-function="nfc">NFC/RFID</button>
+                        <button class="func-btn" data-function="subghz">Sub-GHz</button>
+                        <button class="func-btn" data-function="badusb">BadUSB</button>
+                        <button class="func-btn" data-function="gpio">GPIO 控制</button>
+                    </div>
+                    
+                    <div class="function-display" id="function-output">
+                        >> 选择左侧功能开始模拟
+                        
+                        当前选择: 红外遥控模拟
+                        可用命令:
+                        - 电视电源开关
+                        - 音量增加/减少
+                        - 频道切换
+                        - 自定义红外信号
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="footer">
-            © 2026 ChenmuzeSMP | 欢迎加入我们的服务器
-        </div>
+        
+        <footer>
+            <p>Flipper Zero 模拟器 - 仅供教育和演示用途</p>
+            <p>本模拟器为网页版本，无法执行真实的射频/NFC/红外操作</p>
+            <a href="https://github.com/" target="_blank" class="github-link">
+                <i class="fab fa-github"></i> 可在 GitHub Pages 上部署
+            </a>
+        </footer>
     </div>
 
     <script>
-        // IP 复制功能（无提示）
-        const serverIpElement = document.getElementById('serverIp');
-        serverIpElement.addEventListener('click', () => {
-            navigator.clipboard.writeText(serverIpElement.textContent)
-                .catch(err => {
-                    console.error('复制失败：', err);
-                });
-        });
-
-        // 投票系统核心功能（无提示）
-        document.addEventListener('DOMContentLoaded', () => {
-            const voteOptions = document.querySelectorAll('.vote-option');
-            const votedOptionKey = 'chenmuzesmp_voted_option';
-            const voteCountKeyPrefix = 'chenmuzesmp_vote_count_';
-
-            // 初始化投票数
-            voteOptions.forEach(option => {
-                const optionId = option.dataset.option;
-                const countElement = document.getElementById(`count${optionId}`);
-                const savedCount = localStorage.getItem(`${voteCountKeyPrefix}${optionId}`) || 0;
-                countElement.textContent = savedCount;
-            });
-
-            // 初始化已投票状态
-            const votedOption = localStorage.getItem(votedOptionKey);
-            if (votedOption) {
-                voteOptions.forEach(option => {
-                    if (option.dataset.option === votedOption) {
-                        option.classList.add('voted');
-                    }
-                });
+        // Flipper Zero 菜单系统
+        const menuSystem = {
+            currentMenu: 'main',
+            selectedIndex: 0,
+            menus: {
+                main: [
+                    { name: 'Sub-GHz', icon: 'fas fa-broadcast-tower', action: 'subghz' },
+                    { name: 'NFC/RFID', icon: 'fas fa-id-card', action: 'nfc' },
+                    { name: '红外遥控', icon: 'fas fa-tv', action: 'infrared' },
+                    { name: 'BadUSB', icon: 'fas fa-keyboard', action: 'badusb' },
+                    { name: 'GPIO', icon: 'fas fa-microchip', action: 'gpio' },
+                    { name: 'iButton', icon: 'fas fa-key', action: 'ibutton' },
+                    { name: '设置', icon: 'fas fa-cog', action: 'settings' },
+                    { name: '关于', icon: 'fas fa-info-circle', action: 'about' }
+                ],
+                subghz: [
+                    { name: '读取信号', icon: 'fas fa-satellite-dish', action: 'read_signal' },
+                    { name: '发送信号', icon: 'fas fa-paper-plane', action: 'send_signal' },
+                    { name: '保存的信号', icon: 'fas fa-save', action: 'saved_signals' },
+                    { name: '频率分析', icon: 'fas fa-chart-line', action: 'frequency_analysis' },
+                    { name: '返回', icon: 'fas fa-arrow-left', action: 'back' }
+                ],
+                nfc: [
+                    { name: '读取卡片', icon: 'fas fa-id-card', action: 'read_card' },
+                    { name: '模拟卡片', icon: 'fas fa-clone', action: 'emulate_card' },
+                    { name: '保存的卡片', icon: 'fas fa-address-card', action: 'saved_cards' },
+                    { name: '写入卡片', icon: 'fas fa-edit', action: 'write_card' },
+                    { name: '返回', icon: 'fas fa-arrow-left', action: 'back' }
+                ],
+                infrared: [
+                    { name: '发送红外信号', icon: 'fas fa-tv', action: 'send_ir' },
+                    { name: '学习红外信号', icon: 'fas fa-book', action: 'learn_ir' },
+                    { name: '保存的红外', icon: 'fas fa-save', action: 'saved_ir' },
+                    { name: '通用遥控器', icon: 'fas fa-remote', action: 'universal_remote' },
+                    { name: '返回', icon: 'fas fa-arrow-left', action: 'back' }
+                ],
+                settings: [
+                    { name: '设备信息', icon: 'fas fa-info', action: 'device_info' },
+                    { name: '屏幕设置', icon: 'fas fa-desktop', action: 'display_settings' },
+                    { name: '声音设置', icon: 'fas fa-volume-up', action: 'sound_settings' },
+                    { name: '省电模式', icon: 'fas fa-battery-half', action: 'power_saving' },
+                    { name: '返回', icon: 'fas fa-arrow-left', action: 'back' }
+                ]
             }
-
-            // 投票点击事件
-            voteOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    if (localStorage.getItem(votedOptionKey)) {
-                        return;
+        };
+        
+        // 功能输出内容
+        const functionOutputs = {
+            infrared: `>> 红外遥控模拟激活
+                        
+设备: 通用红外发射器
+模式: 发送红外信号
+                        
+可用命令:
+• 电视电源开关: POWER
+• 音量增加: VOLUME_UP
+• 音量减少: VOLUME_DOWN
+• 频道增加: CHANNEL_UP
+• 频道减少: CHANNEL_DOWN
+• 静音: MUTE
+                        
+状态: 等待命令...
+最近操作: 无`,
+            
+            nfc: `>> NFC/RFID 模拟激活
+                        
+模式: 卡片模拟
+支持的协议: 
+• Mifare Classic 1K/4K
+• NFC-A (ISO14443A)
+• NFC-B (ISO14443B)
+• Felica
+                        
+当前模拟卡片: 无
+卡片UID: 未设置
+                        
+操作:
+1. 选择要模拟的卡片类型
+2. 设置卡片UID和数据
+3. 开始模拟卡片
+4. 使用读卡器验证`,
+            
+            subghz: `>> Sub-GHz 射频模拟激活
+                        
+频率范围: 300-928 MHz
+当前频率: 433.92 MHz
+调制方式: FSK
+                        
+可用功能:
+• 信号分析: 扫描并分析环境中的射频信号
+• 信号录制: 录制特定频率的射频信号
+• 信号重放: 重放已录制的射频信号
+• 频率扫描: 扫描特定频段的活跃信号
+                        
+状态: 就绪`,
+            
+            badusb: `>> BadUSB 模拟激活
+                        
+模式: 键盘输入模拟
+支持的脚本: Ducky Script
+                        
+示例脚本:
+REM 简单的延迟测试脚本
+DELAY 1000
+GUI r
+DELAY 500
+STRING notepad
+ENTER
+DELAY 1000
+STRING Hello from Flipper Zero!
+                        
+状态: 准备执行脚本`,
+            
+            gpio: `>> GPIO 控制模拟激活
+                        
+可用引脚: 
+• PA4, PA6, PA7 (UART)
+• PB2, PB3 (I2C)
+• PC0-PC3 (ADC)
+                        
+当前模式: 数字输出
+引脚状态:
+PA4: HIGH
+PA6: LOW
+PA7: HIGH
+PB2: LOW
+PB3: HIGH
+                        
+操作: 点击上方按钮切换引脚状态`
+        };
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 渲染主菜单
+            renderMenu();
+            
+            // 设置按钮事件监听器
+            setupButtonListeners();
+            
+            // 设置功能按钮事件监听器
+            setupFunctionButtons();
+        });
+        
+        // 渲染当前菜单
+        function renderMenu() {
+            const menuContainer = document.getElementById('menu-items');
+            const menuItems = menuSystem.menus[menuSystem.currentMenu];
+            let menuHTML = '';
+            
+            menuItems.forEach((item, index) => {
+                const isActive = index === menuSystem.selectedIndex;
+                menuHTML += `
+                    <div class="menu-item ${isActive ? 'active' : ''}" data-index="${index}">
+                        <span><i class="${item.icon}"></i> ${item.name}</span>
+                        ${isActive ? '<i class="fas fa-caret-right"></i>' : ''}
+                    </div>
+                `;
+            });
+            
+            menuContainer.innerHTML = menuHTML;
+            
+            // 更新屏幕标题
+            const screenHeader = document.querySelector('.screen-header');
+            let menuTitle = '主菜单';
+            if (menuSystem.currentMenu !== 'main') {
+                const mainMenuItem = menuSystem.menus.main.find(item => item.action === menuSystem.currentMenu);
+                menuTitle = mainMenuItem ? mainMenuItem.name : menuSystem.currentMenu;
+            }
+            screenHeader.textContent = `Flipper Zero > ${menuTitle}`;
+        }
+        
+        // 设置物理按钮事件监听
+        function setupButtonListeners() {
+            // 上下左右按钮
+            document.getElementById('btn-up').addEventListener('click', function() {
+                if (menuSystem.selectedIndex > 0) {
+                    menuSystem.selectedIndex--;
+                    renderMenu();
+                }
+            });
+            
+            document.getElementById('btn-down').addEventListener('click', function() {
+                const menuItems = menuSystem.menus[menuSystem.currentMenu];
+                if (menuSystem.selectedIndex < menuItems.length - 1) {
+                    menuSystem.selectedIndex++;
+                    renderMenu();
+                }
+            });
+            
+            document.getElementById('btn-left').addEventListener('click', function() {
+                // 左键功能：通常用于返回或取消
+                if (menuSystem.currentMenu !== 'main') {
+                    goBack();
+                }
+            });
+            
+            document.getElementById('btn-right').addEventListener('click', function() {
+                // 右键功能：进入子菜单或确认
+                const menuItems = menuSystem.menus[menuSystem.currentMenu];
+                const selectedItem = menuItems[menuSystem.selectedIndex];
+                selectMenuItem(selectedItem);
+            });
+            
+            // OK按钮
+            document.getElementById('btn-ok').addEventListener('click', function() {
+                const menuItems = menuSystem.menus[menuSystem.currentMenu];
+                const selectedItem = menuItems[menuSystem.selectedIndex];
+                selectMenuItem(selectedItem);
+            });
+            
+            // 返回按钮
+            document.getElementById('btn-back').addEventListener('click', function() {
+                goBack();
+            });
+            
+            // 电源按钮
+            document.getElementById('btn-power').addEventListener('click', function() {
+                const screen = document.querySelector('.flipper-screen');
+                const isOn = screen.style.display !== 'none';
+                
+                if (isOn) {
+                    screen.style.opacity = '0.2';
+                    setTimeout(() => {
+                        screen.style.opacity = '1';
+                    }, 1000);
+                }
+                
+                // 添加电源动画
+                this.classList.add('pulse');
+                setTimeout(() => {
+                    this.classList.remove('pulse');
+                }, 500);
+            });
+            
+            // 添加键盘控制
+            document.addEventListener('keydown', function(e) {
+                switch(e.key) {
+                    case 'ArrowUp':
+                        e.preventDefault();
+                        document.getElementById('btn-up').click();
+                        simulateButtonPress('btn-up');
+                        break;
+                    case 'ArrowDown':
+                        e.preventDefault();
+                        document.getElementById('btn-down').click();
+                        simulateButtonPress('btn-down');
+                        break;
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        document.getElementById('btn-left').click();
+                        simulateButtonPress('btn-left');
+                        break;
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        document.getElementById('btn-right').click();
+                        simulateButtonPress('btn-right');
+                        break;
+                    case 'Enter':
+                        e.preventDefault();
+                        document.getElementById('btn-ok').click();
+                        simulateButtonPress('btn-ok');
+                        break;
+                    case 'Escape':
+                        e.preventDefault();
+                        document.getElementById('btn-back').click();
+                        simulateButtonPress('btn-back');
+                        break;
+                }
+            });
+        }
+        
+        // 模拟按钮按下效果
+        function simulateButtonPress(btnId) {
+            const btn = document.getElementById(btnId);
+            btn.style.transform = 'translateY(2px)';
+            btn.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.5)';
+            
+            setTimeout(() => {
+                btn.style.transform = '';
+                btn.style.boxShadow = '0 5px 10px rgba(0, 0, 0, 0.5)';
+            }, 150);
+        }
+        
+        // 选择菜单项
+        function selectMenuItem(item) {
+            if (item.action === 'back') {
+                goBack();
+                return;
+            }
+            
+            // 如果菜单项对应一个子菜单
+            if (menuSystem.menus[item.action]) {
+                menuSystem.currentMenu = item.action;
+                menuSystem.selectedIndex = 0;
+                renderMenu();
+            } else {
+                // 执行对应操作
+                executeAction(item.action, item.name);
+            }
+        }
+        
+        // 返回上一级菜单
+        function goBack() {
+            if (menuSystem.currentMenu === 'main') return;
+            
+            // 返回主菜单
+            menuSystem.currentMenu = 'main';
+            menuSystem.selectedIndex = 0;
+            renderMenu();
+        }
+        
+        // 执行菜单操作
+        function executeAction(action, name) {
+            const output = document.getElementById('function-output');
+            
+            // 根据不同的动作显示不同的输出
+            let actionMessage = `>> 执行操作: ${name}\n`;
+            
+            switch(action) {
+                case 'read_signal':
+                    actionMessage += `正在扫描Sub-GHz信号...\n检测到信号: 车库门遥控 (433.92 MHz)\n信号强度: 85%\n正在解码...\n解码完成!`;
+                    break;
+                case 'send_signal':
+                    actionMessage += `发送Sub-GHz信号...\n频率: 433.92 MHz\n协议: Princeton\n重复: 5次\n状态: 发送成功!`;
+                    break;
+                case 'read_card':
+                    actionMessage += `正在读取NFC卡片...\n检测到卡片: Mifare Classic 1K\nUID: 4A 3B 2C 1D\n容量: 1KB\n状态: 读取成功!`;
+                    break;
+                case 'emulate_card':
+                    actionMessage += `模拟NFC卡片...\n卡片类型: Mifare Classic 1K\nUID: 4A 3B 2C 1D\n状态: 模拟中...\n请将设备靠近读卡器`;
+                    break;
+                case 'send_ir':
+                    actionMessage += `发送红外信号...\n协议: NEC\n地址: 0x00FF\n命令: 0x12 (电源)\n状态: 发送成功!\n电视应已切换电源状态`;
+                    break;
+                case 'learn_ir':
+                    actionMessage += `学习红外信号...\n将红外遥控对准Flipper Zero\n按下要学习的按钮...\n检测到信号!\n协议: NEC\n地址: 0x00FF\n命令: 0x34 (音量+)\n保存成功!`;
+                    break;
+                case 'device_info':
+                    actionMessage += `设备信息:\n型号: Flipper Zero\n固件版本: 0.80.1\n序列号: FLIP123456\n电池: 87% (健康)\n存储: 512KB/1MB\n最后更新: 2023-10-15`;
+                    break;
+                case 'about':
+                    actionMessage += `Flipper Zero 模拟器\n版本: 1.0.0\n作者: Flipper 社区\n描述: 基于网页的Flipper Zero功能模拟器\n仅供教育和演示用途`;
+                    break;
+                default:
+                    actionMessage += `操作 "${name}" 已执行\n模拟功能运行中...`;
+            }
+            
+            output.textContent = actionMessage;
+            
+            // 切换到对应的功能标签
+            const funcBtn = document.querySelector(`.func-btn[data-function="${action}"]`);
+            if (funcBtn) {
+                document.querySelectorAll('.func-btn').forEach(btn => btn.classList.remove('active'));
+                funcBtn.classList.add('active');
+            }
+        }
+        
+        // 设置功能按钮事件监听器
+        function setupFunctionButtons() {
+            document.querySelectorAll('.func-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 更新活跃按钮
+                    document.querySelectorAll('.func-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 显示对应功能输出
+                    const functionType = this.getAttribute('data-function');
+                    const output = document.getElementById('function-output');
+                    
+                    if (functionOutputs[functionType]) {
+                        output.textContent = functionOutputs[functionType];
                     }
-
-                    const optionId = option.dataset.option;
-                    const countElement = document.getElementById(`count${optionId}`);
-                    let currentCount = parseInt(countElement.textContent) || 0;
-                    currentCount++;
-                    countElement.textContent = currentCount;
-                    localStorage.setItem(`${voteCountKeyPrefix}${optionId}`, currentCount);
-                    localStorage.setItem(votedOptionKey, optionId);
-                    option.classList.add('voted');
                 });
             });
-        });
+        }
     </script>
 </body>
 </html>
