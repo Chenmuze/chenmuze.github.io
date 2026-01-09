@@ -1,257 +1,49 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChenmuzeSMP - Minecraft 服务器</title>
+    <title>Chenmuze_ GitHub 主页</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Microsoft YaHei", Arial, sans-serif;
-        }
-
         body {
-            background-color: #1a1a1a;
-            color: #f5f5f5;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            background: #e0f7fa;
+            color: #000;
+            font-family: Courier New, monospace;
             padding: 20px;
-            position: relative; /* 为右上角登录按钮提供定位容器 */
-        }
-
-        /* 右上角登录按钮样式 */
-        .login-btn-top {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #00ff00;
-            color: #1a1a1a;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none; /* 去除链接下划线 */
-            z-index: 999; /* 确保按钮在最上层 */
-        }
-
-        .login-btn-top:hover {
-            background-color: #00cc00;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-        }
-
-        /* 服务器核心内容样式（默认显示，无需登录） */
-        .server-card {
-            background-color: #2d2d2d;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
-            text-align: center;
             max-width: 600px;
-            width: 100%;
-            display: block; /* 直接显示服务器内容 */
+            margin: 0 auto;
+            line-height: 1.6;
         }
-
-        .server-title {
-            color: #00ff00;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #00ff00;
-            padding-bottom: 10px;
-        }
-
-        .server-info {
-            margin: 15px 0;
-            font-size: 1.1rem;
-        }
-
-        .ip-container {
-            margin: 30px 0;
-            position: relative;
-        }
-
-        .server-ip {
-            background-color: #333;
-            padding: 15px 20px;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            color: #00ff00;
-            border: 1px solid #00ff00;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.3s ease;
-        }
-
-        .server-ip:hover {
-            background-color: #444;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-        }
-
-        .status-online {
-            color: #00ff00;
+        .header {
+            font-size: 20px;
             font-weight: bold;
-        }
-
-        .member-count {
-            color: #f5f5f5;
-            font-style: italic;
-        }
-
-        /* 投票系统样式 */
-        .vote-section {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 2px solid #00ff00;
-        }
-
-        .vote-title {
-            color: #00ff00;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-        }
-
-        .vote-options {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
             margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #87ceeb;
         }
-
-        .vote-option {
-            background-color: #333;
-            padding: 12px 20px;
-            border-radius: 8px;
-            border: 1px solid #555;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .nav-link {
+            display: block;
+            background: #fff;
+            border: 1px solid #87ceeb;
+            border-radius: 6px;
+            padding: 12px 18px;
+            margin: 12px 0;
+            color: #000;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 15px;
         }
-
-        .vote-option:hover {
-            border-color: #00ff00;
-            background-color: #444;
-            box-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
-        }
-
-        .vote-option.voted {
-            background-color: #2a4b2a;
-            border-color: #00ff00;
-            cursor: not-allowed;
-        }
-
-        .option-text {
-            font-size: 1.05rem;
-        }
-
-        .vote-count {
-            color: #00ff00;
-            font-weight: bold;
-            background-color: #1a1a1a;
-            padding: 5px 12px;
-            border-radius: 12px;
-        }
-
-        .footer {
-            margin-top: 30px;
-            color: #888;
-            font-size: 0.9rem;
+        .nav-link:hover {
+            background: #d1ecf1;
+            box-shadow: 0 0 6px #87ceeb;
         }
     </style>
 </head>
 <body>
-    <!-- 右上角登录按钮，点击跳转至aternos.org -->
-    <a href="https://aternos.org" target="_blank" class="login-btn-top">登录</a>
-
-    <!-- 服务器核心内容（默认直接显示） -->
-    <div class="server-card" id="serverCard">
-        <h1 class="server-title">ChenmuzeSMP</h1>
-
-        <p class="server-info">游戏版本：Minecraft Java 版 1.21.8</p>
-        <p class="server-info">服务器状态：<span class="status-online">✅ 持续在线</span></p>
-        <p class="server-info">成员数量：<span class="member-count">0 人</span></p>
-
-        <div class="ip-container">
-            <div class="server-ip" id="serverIp">chenmuzesmp.aternos.me</div>
-        </div>
-
-        <!-- 投票系统模块（仅保留1个投票选项） -->
-        <div class="vote-section">
-            <h2 class="vote-title">📊 ChenmuzeSMP 服务器投票</h2>
-            <div class="vote-options" id="voteOptions">
-                <!-- 仅保留1个投票选项，文字为指定内容 -->
-                <div class="vote-option" data-option="1">
-                    <span class="option-text">1，为Chenmuze_的server投票</span>
-                    <span class="vote-count" id="count1">0</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer">
-            © 2026 ChenmuzeSMP | 欢迎加入我们的服务器
-        </div>
-    </div>
-
-    <script>
-        // IP 复制功能（无提示）
-        const serverIpElement = document.getElementById('serverIp');
-        serverIpElement.addEventListener('click', () => {
-            navigator.clipboard.writeText(serverIpElement.textContent)
-                .catch(err => {
-                    console.error('复制失败：', err);
-                });
-        });
-
-        // 投票系统核心功能（无提示）
-        document.addEventListener('DOMContentLoaded', () => {
-            const voteOptions = document.querySelectorAll('.vote-option');
-            const votedOptionKey = 'chenmuzesmp_voted_option';
-            const voteCountKeyPrefix = 'chenmuzesmp_vote_count_';
-
-            // 初始化投票数
-            voteOptions.forEach(option => {
-                const optionId = option.dataset.option;
-                const countElement = document.getElementById(`count${optionId}`);
-                const savedCount = localStorage.getItem(`${voteCountKeyPrefix}${optionId}`) || 0;
-                countElement.textContent = savedCount;
-            });
-
-            // 初始化已投票状态
-            const votedOption = localStorage.getItem(votedOptionKey);
-            if (votedOption) {
-                voteOptions.forEach(option => {
-                    if (option.dataset.option === votedOption) {
-                        option.classList.add('voted');
-                    }
-                });
-            }
-
-            // 投票点击事件
-            voteOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    if (localStorage.getItem(votedOptionKey)) {
-                        return;
-                    }
-
-                    const optionId = option.dataset.option;
-                    const countElement = document.getElementById(`count${optionId}`);
-                    let currentCount = parseInt(countElement.textContent) || 0;
-                    currentCount++;
-                    countElement.textContent = currentCount;
-                    localStorage.setItem(`${voteCountKeyPrefix}${optionId}`, currentCount);
-                    localStorage.setItem(votedOptionKey, optionId);
-                    option.classList.add('voted');
-                });
-            });
-        });
-    </script>
+    <div class="header">Chenmuze_ GitHub 主页</div>
+    <a href="https://chenmuze.github.io/germany/" class="nav-link">德国</a>
+    <a href="https://chenmuze.github.io/shitserver.github.io/" class="nav-link">不好的服务器</a>
+    <a href="https://chenmuze.github.io/food/" class="nav-link">chenmuze的小摊</a>
+    <a href="https://chenmuze.github.io/server/" class="nav-link">ChenmuzeSmp服务器的主页</a>
 </body>
 </html>
